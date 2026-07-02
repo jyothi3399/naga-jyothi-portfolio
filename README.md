@@ -28,3 +28,5 @@ on the email/phone cards.
   `--accent` (amber) or `--accent-2` (teal) to reshuffle the whole palette.
 - Each resume section is its own `<section class="panel" id="panel-...">` —
   easy to find and edit by section name.
+
+
