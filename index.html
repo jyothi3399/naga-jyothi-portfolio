@@ -92,15 +92,7 @@
     box-shadow:0 0 22px rgba(255,206,84,0.45);
     transition:left .38s var(--ease), width .38s var(--ease);
   }
-  .nav-toggle{ display:none; }
-
-  @media (max-width:760px){
-    nav.tabs{ position:fixed; left:0; right:0; bottom:0; top:auto; background:rgba(11,13,16,0.94); backdrop-filter:blur(14px); border-top:1px solid var(--border); padding:8px 10px; justify-content:space-between; overflow-x:auto; z-index:50; }
-    nav.tabs button{ font-size:10px; padding:8px 8px; white-space:nowrap; }
-    .tab-flash{ display:none; }
-    body{ padding-bottom:64px; }
-  }
-
+  
   /* ============ APERTURE SIGNATURE ============ */
   .aperture{ display:block; }
   .aperture .blade{
@@ -110,14 +102,46 @@
   .aperture.open .blade{ transform:rotate(46deg) scale(1); }
   .aperture.closed .blade{ transform:rotate(0deg) scale(1.4); }
 
-  /* ============ HERO ============ */
+  /* ============ HERO (Updated for Image & Responsiveness) ============ */
   .hero{ padding:76px 0 64px; position:relative; }
+  .hero-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-content {
+    flex: 1;
+    max-width: 600px;
+  }
+  .hero-image-container {
+    flex: 0 0 340px;
+    position: relative;
+  }
+  
+  /* The uploaded image styles */
+  .profile-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    border-radius: 24px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    position: relative;
+    z-index: 2;
+  }
+
   .hero-flash-ring{
-    position:absolute; top:-40px; right:-60px; width:340px; height:340px;
+    position:absolute; top:-10%; right:-10%; width:120%; height:120%;
     border-radius:50%;
-    background:radial-gradient(circle, rgba(255,206,84,0.16), transparent 70%);
+    background:radial-gradient(circle, rgba(255,206,84,0.12), transparent 60%);
     pointer-events:none;
     animation:pulse-ring 5s ease-in-out infinite;
+    z-index: 1;
   }
   @keyframes pulse-ring{ 0%,100%{ opacity:.6; transform:scale(1);} 50%{ opacity:1; transform:scale(1.08);} }
 
@@ -137,11 +161,11 @@
 
   .role-line{
     font-family:var(--mono); font-size:clamp(14px,2vw,17px); color:var(--muted);
-    margin:0 0 30px; max-width:640px; line-height:1.6;
+    margin:0 0 30px; line-height:1.6;
   }
   .role-line .swap{ color:var(--text); }
 
-  p.lede{ max-width:600px; color:var(--muted); font-size:16px; line-height:1.75; margin:0 0 34px; }
+  p.lede{ color:var(--muted); font-size:16px; line-height:1.75; margin:0 0 34px; }
 
   .cta-row{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
   .btn{
@@ -173,7 +197,6 @@
 
   /* ============ ABOUT ============ */
   .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:48px; }
-  @media (max-width:760px){ .about-grid{ grid-template-columns:1fr; } }
   .about-grid p{ color:var(--muted); line-height:1.85; font-size:15.5px; margin:0 0 18px; }
   .about-grid strong{ color:var(--text); }
   .fact-card{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px 24px; margin-bottom:14px; }
@@ -252,11 +275,11 @@
 
   /* ============ CONTACT ============ */
   .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  @media (max-width:640px){ .contact-grid{ grid-template-columns:1fr; } }
   .contact-card{
     background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px;
     display:flex; align-items:center; gap:16px; cursor:pointer;
     transition:border-color .25s var(--ease), transform .25s var(--ease), background .25s;
+    word-break: break-all; /* prevents long emails from breaking mobile layout */
   }
   .contact-card:hover{ border-color:var(--accent); transform:translateY(-3px); background:var(--surface-2); }
   .contact-icon{ width:42px; height:42px; border-radius:10px; background:var(--accent-dim); display:flex; align-items:center; justify-content:center; flex:none; }
@@ -266,9 +289,72 @@
   .copy-note{ font-family:var(--mono); font-size:11px; color:var(--accent-2); margin-left:auto; opacity:0; transition:opacity .2s; }
   .copy-note.show{ opacity:1; }
 
-  footer{ border-top:1px solid var(--border); padding:26px 0; }
+  footer{ border-top:1px solid var(--border); padding:26px 0; margin-bottom: 20px; }
   .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
-  footer p{ font-family:var(--mono); font-size:11.5px; color:var(--muted-2); margin:0; }
+  footer p{ font-family:var(--mono); font-size:11.5px; color:var(--muted-2); margin:0; text-align: center; }
+
+  /* ============ RESPONSIVE MEDIA QUERIES ============ */
+  @media (max-width: 900px) {
+    .hero-grid {
+      flex-direction: column-reverse;
+      text-align: center;
+      gap: 32px;
+    }
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .eyebrow { justify-content: center; }
+    .cta-row, .stat-row { justify-content: center; }
+    .hero-image-container {
+      width: 100%;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    .about-grid{ grid-template-columns:1fr; gap: 32px; }
+  }
+
+  @media (max-width: 760px) {
+    .shell { padding: 0 20px; }
+    
+    /* Move Navigation to bottom on mobile */
+    nav.tabs {
+      position:fixed; left:0; right:0; bottom:0; top:auto;
+      background:rgba(11,13,16,0.94); backdrop-filter:blur(14px);
+      border-top:1px solid var(--border); padding:8px 10px;
+      justify-content:space-between; overflow-x:auto; z-index:50;
+    }
+    nav.tabs button { font-size:10.5px; padding:10px 8px; white-space:nowrap; flex: 1; }
+    .tab-flash { display:none; }
+    
+    /* Add padding to body so content doesn't hide behind bottom nav */
+    body { padding-bottom: 70px; }
+    footer { margin-bottom: 60px; } /* Ensures footer sits above mobile nav */
+    
+    .footer-inner { flex-direction: column; justify-content: center; }
+    
+    .contact-grid{ grid-template-columns:1fr; }
+    
+    h1.name { font-size: clamp(32px, 8vw, 42px); }
+    .hero { padding: 40px 0 30px; }
+  }
+
+  @media (max-width: 480px) {
+    .shell { padding: 0 16px; }
+    .topbar-inner { padding: 12px 0; }
+    .brand-mark { width: 28px; height: 28px; }
+    .brand-text { font-size: 14.5px; }
+    .brand-text small { font-size: 9.5px; }
+    
+    .stat-row { gap: 20px; flex-direction: row; justify-content: space-around; width: 100%; }
+    .stat b { font-size: 24px; }
+    .stat span { font-size: 10px; }
+    
+    .project-card { padding: 24px; }
+    .edu-card { padding: 24px 20px; }
+    .edu-meta { gap: 16px; }
+  }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:.001s !important; transition-duration:.001s !important; }
@@ -301,7 +387,7 @@
       <button data-tab="skills">Skills</button>
       <button data-tab="experience">Experience</button>
       <button data-tab="projects">Projects</button>
-      <button data-tab="education">Education</button>
+      <button data-tab="education">Edu</button>
       <button data-tab="contact">Contact</button>
     </nav>
   </div>
@@ -312,19 +398,32 @@
   <!-- HOME -->
   <section class="panel" id="panel-home" data-panel>
     <div class="hero">
-      <div class="hero-flash-ring"></div>
-      <p class="eyebrow">Available for new opportunities</p>
-      <h1 class="name">Kommula<br><span class="hl"> Naga Jyothi</span></h1>
-      <p class="role-line">Full Stack Developer <span class="swap">·</span> Flask &amp; Python <span class="swap">·</span> Data Engineering with Databricks &amp; PySpark</p>
-      <p class="lede">I build and ship full-stack products end to end — from Flask APIs and camera-hardware integrations to responsive interfaces — and bring the same rigor to data pipelines with Apache Spark and Delta Lake. Currently building <strong style="color:var(--text)">SNAP ON WHEELS</strong>, a live AI-powered photobooth platform.</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#projects" data-nav="projects">View my work</a>
-        <a class="btn btn-ghost" href="#contact" data-nav="contact">Get in touch</a>
-      </div>
-      <div class="stat-row">
-        <div class="stat"><b>2+</b><span>Years Experience</span></div>
-        <div class="stat"><b>1</b><span>Live Product Shipped</span></div>
-        <div class="stat"><b>10+</b><span>Tech &amp; Tools</span></div>
+      <div class="hero-grid">
+        
+        <!-- TEXT CONTENT -->
+        <div class="hero-content">
+          <p class="eyebrow">Available for new opportunities</p>
+          <h1 class="name">Kommula<br><span class="hl"> Naga Jyothi</span></h1>
+          <p class="role-line">Full Stack Developer <span class="swap">·</span> Flask &amp; Python <span class="swap">·</span> Data Engineering with Databricks &amp; PySpark</p>
+          <p class="lede">I build and ship full-stack products end to end — from Flask APIs and camera-hardware integrations to responsive interfaces — and bring the same rigor to data pipelines with Apache Spark and Delta Lake. Currently building <strong style="color:var(--text)">SNAP ON WHEELS</strong>, a live AI-powered photobooth platform.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#projects" data-nav="projects">View my work</a>
+            <a class="btn btn-ghost" href="#contact" data-nav="contact">Get in touch</a>
+          </div>
+          <div class="stat-row">
+            <div class="stat"><b>2+</b><span>Years Exp</span></div>
+            <div class="stat"><b>1</b><span>Product Live</span></div>
+            <div class="stat"><b>10+</b><span>Tech &amp; Tools</span></div>
+          </div>
+        </div>
+
+        <!-- IMAGE CONTAINER -->
+        <div class="hero-image-container">
+          <div class="hero-flash-ring"></div>
+          <!-- NOTE: REPLACE src="..." WITH YOUR OWN IMAGE LINK BELOW -->
+          <img src="https://via.placeholder.com/600x750/181C22/FFCE54?text=Upload+Your+Image+Here" alt="Kommula Naga Jyothi" class="profile-img">
+        </div>
+
       </div>
     </div>
   </section>
