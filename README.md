@@ -12,12 +12,11 @@ on the email/phone cards.
 2. Upload `index.html` to the repo (drag-and-drop on the GitHub website works,
    or `git add index.html && git commit -m "portfolio" && git push`).
 3. In the repo: **Settings → Pages → Source → Deploy from branch → main → / (root) → Save**.
-4. After ~1 minute your site is live at:
-   `https://<your-github-username>.github.io/naga-jyothi-portfolio/`
+
 
 ## Before you publish — 2 things to fill in
 
-- In `index.html`, search for `add-your-github-url` (Contact section) and
+- In `index.html`, search for `https://github.com/jyothi3399` (Contact section) and
   replace the link/text with your real GitHub profile URL.
 - Optional: add a LinkedIn card the same way you see the GitHub one, once you
   have a public LinkedIn URL.

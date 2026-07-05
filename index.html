@@ -9,50 +9,85 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ============ DESIGN TOKENS ============ */
-  :root{
-    --bg:#0B0D10;
-    --bg-alt:#101317;
-    --surface:#181C22;
-    --surface-2:#1F242C;
-    --border: rgba(245,243,238,0.09);
-    --border-strong: rgba(245,243,238,0.18);
-    --text:#F3F1EA;
-    --muted:#8B92A0;
-    --muted-2:#5B6270;
-    --accent:#FFCE54;      /* flash amber */
-    --accent-dim: rgba(255,206,84,0.14);
-    --accent-2:#54D6C2;    /* data teal */
-    --accent-2-dim: rgba(84,214,194,0.14);
-    --danger:#FF6B5E;
+  /* ============ DESIGN TOKENS (LIGHT THEME DEFAULT) ============ */
+  :root {
+    --bg: #F9FAFB;
+    --bg-alt: #F3F4F6;
+    --surface: #FFFFFF;
+    --surface-2: #F4F5F7;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.16);
+    --text: #111418;
+    --muted: #666D7A;
+    --muted-2: #8B92A0;
+    --accent: #F59E0B;      /* Vibrant Amber */
+    --accent-dim: rgba(245, 158, 11, 0.12);
+    --accent-2: #0D9488;    /* Deep Teal */
+    --accent-2-dim: rgba(13, 148, 136, 0.12);
+    --danger: #EF4444;
+    --btn-text: #FFFFFF;    /* Text color on solid accent buttons */
+    
     --display: 'Space Grotesk', sans-serif;
     --body: 'Inter', sans-serif;
     --mono: 'JetBrains Mono', monospace;
     --ease: cubic-bezier(.22,1,.36,1);
   }
 
+  /* ============ DARK THEME OVERRIDES ============ */
+  [data-theme="dark"] {
+    --bg: #0B0D10;
+    --bg-alt: #101317;
+    --surface: #181C22;
+    --surface-2: #1F242C;
+    --border: rgba(245,243,238,0.09);
+    --border-strong: rgba(245,243,238,0.18);
+    --text: #F3F1EA;
+    --muted: #8B92A0;
+    --muted-2: #5B6270;
+    --accent: #FFCE54;      /* Flash Amber */
+    --accent-dim: rgba(255,206,84,0.14);
+    --accent-2: #54D6C2;    /* Data Teal */
+    --accent-2-dim: rgba(84,214,194,0.14);
+    --btn-text: #0B0D10;
+  }
+
   *{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
+  
+  /* Flex layout to push footer to absolute bottom */
   body{
     margin:0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     background:
-      radial-gradient(1200px 600px at 85% -10%, rgba(255,206,84,0.07), transparent 60%),
-      radial-gradient(900px 500px at -10% 110%, rgba(84,214,194,0.06), transparent 60%),
+      radial-gradient(1200px 600px at 85% -10%, var(--accent-dim), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, var(--accent-2-dim), transparent 60%),
       var(--bg);
     color:var(--text);
     font-family:var(--body);
     -webkit-font-smoothing:antialiased;
-    min-height:100vh;
+    transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
   }
-  ::selection{ background:var(--accent); color:#0B0D10; }
+  
+  main.shell {
+    flex: 1 0 auto; /* Allows main content to grow and push footer down */
+    width: 100%;
+  }
+  
+  footer {
+    flex-shrink: 0;
+    width: 100%;
+  }
 
+  ::selection{ background:var(--accent); color:var(--btn-text); }
   a{ color:inherit; text-decoration:none; }
   button{ font-family:inherit; }
 
   /* film grain texture overlay */
   .grain{
     position:fixed; inset:0; pointer-events:none; z-index:1;
-    opacity:.035; mix-blend-mode:overlay;
+    opacity:.035; mix-blend-mode:normal;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
@@ -64,17 +99,26 @@
   header.topbar{
     position:sticky; top:0; z-index:40;
     backdrop-filter:blur(14px) saturate(140%);
-    background:rgba(11,13,16,0.72);
+    background:var(--bg);
     border-bottom:1px solid var(--border);
   }
+  
+  /* Make header slightly transparent depending on theme */
+  [data-theme="dark"] header.topbar { background:rgba(11,13,16,0.72); }
+  :root header.topbar { background:rgba(249,250,251,0.85); }
+
   .topbar-inner{
     display:flex; align-items:center; justify-content:space-between;
     padding:16px 0;
+    position: relative;
   }
+  
   .brand{ display:flex; align-items:center; gap:12px; }
   .brand-mark{ width:34px; height:34px; flex:none; }
   .brand-text{ font-family:var(--display); font-weight:600; font-size:16px; letter-spacing:.01em; }
   .brand-text small{ display:block; font-family:var(--mono); font-weight:400; font-size:10.5px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-top:2px; }
+
+  .nav-container { display: flex; align-items: center; gap: 16px; }
 
   nav.tabs{ position:relative; display:flex; gap:2px; }
   nav.tabs button{
@@ -85,21 +129,32 @@
     transition:color .25s var(--ease);
   }
   nav.tabs button:hover{ color:var(--text); }
-  nav.tabs button.active{ color:#0B0D10; }
+  nav.tabs button.active{ color:var(--btn-text); }
+  
   .tab-flash{
     position:absolute; z-index:1; top:2px; height:calc(100% - 4px);
     background:var(--accent); border-radius:8px;
-    box-shadow:0 0 22px rgba(255,206,84,0.45);
+    box-shadow:0 0 22px var(--accent-dim);
     transition:left .38s var(--ease), width .38s var(--ease);
   }
-  .nav-toggle{ display:none; }
 
-  @media (max-width:760px){
-    nav.tabs{ position:fixed; left:0; right:0; bottom:0; top:auto; background:rgba(11,13,16,0.94); backdrop-filter:blur(14px); border-top:1px solid var(--border); padding:8px 10px; justify-content:space-between; overflow-x:auto; z-index:50; }
-    nav.tabs button{ font-size:10px; padding:8px 8px; white-space:nowrap; }
-    .tab-flash{ display:none; }
-    body{ padding-bottom:64px; }
+  /* Header Controls (Theme & Hamburger) */
+  .icon-btn {
+    background: transparent; border: 1px solid var(--border);
+    width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text); cursor: pointer; transition: all 0.2s;
   }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--surface); }
+  
+  .hamburger { display: none; border-radius: 8px; }
+  
+  /* Theme toggle icon switching */
+  .sun-icon, .moon-icon { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  [data-theme="dark"] .sun-icon { display: block; }
+  [data-theme="dark"] .moon-icon { display: none; }
+  [data-theme="light"] .sun-icon { display: none; }
+  [data-theme="light"] .moon-icon { display: block; }
 
   /* ============ APERTURE SIGNATURE ============ */
   .aperture{ display:block; }
@@ -112,12 +167,44 @@
 
   /* ============ HERO ============ */
   .hero{ padding:76px 0 64px; position:relative; }
+  .hero-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-content {
+    flex: 1;
+    max-width: 600px;
+  }
+  .hero-image-container {
+    flex: 0 0 340px;
+    position: relative;
+  }
+  
+  .profile-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    border-radius: 24px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 2;
+  }
+  [data-theme="dark"] .profile-img { box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+
   .hero-flash-ring{
-    position:absolute; top:-40px; right:-60px; width:340px; height:340px;
+    position:absolute; top:-10%; right:-10%; width:120%; height:120%;
     border-radius:50%;
-    background:radial-gradient(circle, rgba(255,206,84,0.16), transparent 70%);
+    background:radial-gradient(circle, var(--accent-dim), transparent 60%);
     pointer-events:none;
     animation:pulse-ring 5s ease-in-out infinite;
+    z-index: 1;
   }
   @keyframes pulse-ring{ 0%,100%{ opacity:.6; transform:scale(1);} 50%{ opacity:1; transform:scale(1.08);} }
 
@@ -137,11 +224,11 @@
 
   .role-line{
     font-family:var(--mono); font-size:clamp(14px,2vw,17px); color:var(--muted);
-    margin:0 0 30px; max-width:640px; line-height:1.6;
+    margin:0 0 30px; line-height:1.6;
   }
   .role-line .swap{ color:var(--text); }
 
-  p.lede{ max-width:600px; color:var(--muted); font-size:16px; line-height:1.75; margin:0 0 34px; }
+  p.lede{ color:var(--muted); font-size:16px; line-height:1.75; margin:0 0 34px; }
 
   .cta-row{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
   .btn{
@@ -150,8 +237,8 @@
     font-family:var(--body); letter-spacing:.01em; cursor:pointer; border:1px solid transparent;
     transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
   }
-  .btn-primary{ background:var(--accent); color:#0B0D10; }
-  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 10px 30px rgba(255,206,84,0.28); }
+  .btn-primary{ background:var(--accent); color:var(--btn-text); }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 10px 30px var(--accent-dim); }
   .btn-ghost{ background:transparent; border-color:var(--border-strong); color:var(--text); }
   .btn-ghost:hover{ transform:translateY(-2px); border-color:var(--accent-2); color:var(--accent-2); }
 
@@ -173,7 +260,6 @@
 
   /* ============ ABOUT ============ */
   .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:48px; }
-  @media (max-width:760px){ .about-grid{ grid-template-columns:1fr; } }
   .about-grid p{ color:var(--muted); line-height:1.85; font-size:15.5px; margin:0 0 18px; }
   .about-grid strong{ color:var(--text); }
   .fact-card{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px 24px; margin-bottom:14px; }
@@ -203,7 +289,7 @@
   .tl-item{ position:relative; margin-bottom:46px; }
   .tl-item::before{
     content:''; position:absolute; left:-32px; top:4px; width:13px; height:13px; border-radius:50%;
-    background:var(--bg); border:2px solid var(--accent); box-shadow:0 0 0 4px rgba(255,206,84,0.1);
+    background:var(--bg); border:2px solid var(--accent); box-shadow:0 0 0 4px var(--accent-dim);
   }
   .tl-item .period{ font-family:var(--mono); font-size:11.5px; color:var(--accent-2); text-transform:uppercase; letter-spacing:.08em; }
   .tl-item h3{ font-family:var(--display); font-size:21px; margin:8px 0 2px; }
@@ -222,7 +308,7 @@
   .project-card:hover{ transform:translateY(-5px); border-color:var(--accent); }
   .project-card::after{
     content:''; position:absolute; top:-60px; right:-60px; width:180px; height:180px; border-radius:50%;
-    background:radial-gradient(circle, rgba(255,206,84,0.14), transparent 70%);
+    background:radial-gradient(circle, var(--accent-dim), transparent 70%);
   }
   .project-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; }
   .project-card h3{ font-family:var(--display); font-size:23px; margin:0 0 6px; }
@@ -252,11 +338,11 @@
 
   /* ============ CONTACT ============ */
   .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  @media (max-width:640px){ .contact-grid{ grid-template-columns:1fr; } }
   .contact-card{
     background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px;
     display:flex; align-items:center; gap:16px; cursor:pointer;
     transition:border-color .25s var(--ease), transform .25s var(--ease), background .25s;
+    word-break: break-all;
   }
   .contact-card:hover{ border-color:var(--accent); transform:translateY(-3px); background:var(--surface-2); }
   .contact-icon{ width:42px; height:42px; border-radius:10px; background:var(--accent-dim); display:flex; align-items:center; justify-content:center; flex:none; }
@@ -266,9 +352,83 @@
   .copy-note{ font-family:var(--mono); font-size:11px; color:var(--accent-2); margin-left:auto; opacity:0; transition:opacity .2s; }
   .copy-note.show{ opacity:1; }
 
-  footer{ border-top:1px solid var(--border); padding:26px 0; }
+  footer{ border-top:1px solid var(--border); padding:26px 0; margin-bottom: 0; }
   .footer-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
-  footer p{ font-family:var(--mono); font-size:11.5px; color:var(--muted-2); margin:0; }
+  footer p{ font-family:var(--mono); font-size:11.5px; color:var(--muted-2); margin:0; text-align: center; }
+
+  /* ============ RESPONSIVE MEDIA QUERIES ============ */
+  @media (max-width: 900px) {
+    .hero-grid {
+      flex-direction: column-reverse;
+      text-align: center;
+      gap: 32px;
+    }
+    .hero-content { display: flex; flex-direction: column; align-items: center; }
+    .eyebrow { justify-content: center; }
+    .cta-row, .stat-row { justify-content: center; }
+    .hero-image-container {
+      width: 100%; max-width: 280px; margin: 0 auto;
+    }
+    .about-grid{ grid-template-columns:1fr; gap: 32px; }
+  }
+
+  @media (max-width: 760px) {
+    .shell { padding: 0 20px; }
+    
+    /* Hamburger Menu Logic */
+    .hamburger { 
+      display: flex; 
+    }
+    
+    nav.tabs {
+      position: absolute;
+      top: 100%; left: 0; right: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      padding: 16px 20px;
+      gap: 8px;
+      opacity: 0; visibility: hidden; transform: translateY(-10px);
+      transition: all 0.3s var(--ease);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    [data-theme="dark"] nav.tabs { box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    
+    nav.tabs.open {
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
+    
+    nav.tabs button { 
+      width: 100%; text-align: left; padding: 12px 16px; 
+      font-size: 13.5px; border-radius: 8px;
+    }
+    nav.tabs button.active { 
+      background: var(--accent-dim); 
+      color: var(--text) !important; 
+    }
+    .tab-flash { display: none; }
+    
+    .footer-inner { flex-direction: column; justify-content: center; }
+    .contact-grid{ grid-template-columns:1fr; }
+    h1.name { font-size: clamp(32px, 8vw, 42px); }
+    .hero { padding: 40px 0 30px; }
+  }
+
+  @media (max-width: 480px) {
+    .shell { padding: 0 16px; }
+    .topbar-inner { padding: 12px 0; }
+    .brand-mark { width: 28px; height: 28px; }
+    .brand-text { font-size: 14.5px; }
+    .brand-text small { font-size: 9.5px; }
+    
+    .stat-row { gap: 20px; flex-direction: row; justify-content: space-around; width: 100%; }
+    .stat b { font-size: 24px; }
+    .stat span { font-size: 10px; }
+    
+    .project-card { padding: 24px; }
+    .edu-card { padding: 24px 20px; }
+    .edu-meta { gap: 16px; }
+  }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:.001s !important; transition-duration:.001s !important; }
@@ -294,16 +454,30 @@
       </svg>
       <span class="brand-text">Kommula Naga Jyothi<small>Full Stack &amp; Data Engineer</small></span>
     </a>
-    <nav class="tabs" id="tabs">
-      <div class="tab-flash" id="flash"></div>
-      <button data-tab="home">Home</button>
-      <button data-tab="about">About</button>
-      <button data-tab="skills">Skills</button>
-      <button data-tab="experience">Experience</button>
-      <button data-tab="projects">Projects</button>
-      <button data-tab="education">Education</button>
-      <button data-tab="contact">Contact</button>
-    </nav>
+    
+    <div class="nav-container">
+      <nav class="tabs" id="tabs">
+        <div class="tab-flash" id="flash"></div>
+        <button data-tab="home">Home</button>
+        <button data-tab="about">About</button>
+        <button data-tab="skills">Skills</button>
+        <button data-tab="experience">Experience</button>
+        <button data-tab="projects">Projects</button>
+        <button data-tab="education">Edu</button>
+        <button data-tab="contact">Contact</button>
+      </nav>
+
+      <!-- Theme Toggle -->
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
+        <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+
+      <!-- Hamburger Button (Mobile Only) -->
+      <button id="hamburger" class="icon-btn hamburger" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -312,19 +486,32 @@
   <!-- HOME -->
   <section class="panel" id="panel-home" data-panel>
     <div class="hero">
-      <div class="hero-flash-ring"></div>
-      <p class="eyebrow">Available for new opportunities</p>
-      <h1 class="name">Kommula<br><span class="hl"> Naga Jyothi</span></h1>
-      <p class="role-line">Full Stack Developer <span class="swap">·</span> Flask &amp; Python <span class="swap">·</span> Data Engineering with Databricks &amp; PySpark</p>
-      <p class="lede">I build and ship full-stack products end to end — from Flask APIs and camera-hardware integrations to responsive interfaces — and bring the same rigor to data pipelines with Apache Spark and Delta Lake. Currently building <strong style="color:var(--text)">SNAP ON WHEELS</strong>, a live AI-powered photobooth platform.</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#projects" data-nav="projects">View my work</a>
-        <a class="btn btn-ghost" href="#contact" data-nav="contact">Get in touch</a>
-      </div>
-      <div class="stat-row">
-        <div class="stat"><b>2+</b><span>Years Experience</span></div>
-        <div class="stat"><b>1</b><span>Live Product Shipped</span></div>
-        <div class="stat"><b>10+</b><span>Tech &amp; Tools</span></div>
+      <div class="hero-grid">
+        
+        <!-- TEXT CONTENT -->
+        <div class="hero-content">
+          <p class="eyebrow">Available for new opportunities</p>
+          <h1 class="name">Kommula<br><span class="hl"> Naga Jyothi</span></h1>
+          <p class="role-line">Full Stack Developer <span class="swap">·</span> Flask &amp; Python <span class="swap">·</span> Data Engineering with Databricks &amp; PySpark</p>
+          <p class="lede">I build and ship full-stack products end to end — from Flask APIs and camera-hardware integrations to responsive interfaces — and bring the same rigor to data pipelines with Apache Spark and Delta Lake. Currently building <strong style="color:var(--text)">SNAP ON WHEELS</strong>, a live AI-powered photobooth platform.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#projects" data-nav="projects">View my work</a>
+            <a class="btn btn-ghost" href="#contact" data-nav="contact">Get in touch</a>
+          </div>
+          <div class="stat-row">
+            <div class="stat"><b>2+</b><span>Years Exp</span></div>
+            <div class="stat"><b>1</b><span>Product Live</span></div>
+            <div class="stat"><b>10+</b><span>Tech &amp; Tools</span></div>
+          </div>
+        </div>
+
+        <!-- IMAGE CONTAINER -->
+        <div class="hero-image-container">
+          <div class="hero-flash-ring"></div>
+          <!-- NOTE: REPLACE src="..." WITH YOUR OWN IMAGE LINK BELOW -->
+          <img src="./jyothi.png" alt="Kommula Naga Jyothi" class="profile-img">
+        </div>
+
       </div>
     </div>
   </section>
@@ -497,11 +684,28 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  // --- THEME MANAGEMENT ---
+  const themeToggle = document.getElementById('theme-toggle');
+  // Default to light theme if no preference is saved
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+
+  themeToggle.addEventListener('click', () => {
+    let currentTheme = document.documentElement.getAttribute('data-theme');
+    let newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  });
+
+  // --- TAB & NAVIGATION MANAGEMENT ---
   const tabsEl = document.getElementById('tabs');
   const buttons = Array.from(tabsEl.querySelectorAll('button[data-tab]'));
   const flash = document.getElementById('flash');
   const panels = Array.from(document.querySelectorAll('[data-panel]'));
   const validTabs = buttons.map(b => b.dataset.tab);
+  
+  // Mobile Menu Elements
+  const hamburger = document.getElementById('hamburger');
 
   function moveFlash(btn){
     if(window.innerWidth <= 760 || !btn) return;
@@ -537,6 +741,10 @@
       const tab = btn.dataset.tab;
       history.pushState(null, '', '#' + tab);
       activate(tab);
+      // Close mobile menu on click
+      if(window.innerWidth <= 760) {
+        tabsEl.classList.remove('open');
+      }
     });
   });
 
@@ -547,6 +755,23 @@
       history.pushState(null, '', '#' + tab);
       activate(tab);
     });
+  });
+
+  // Toggle Hamburger Menu
+  hamburger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    tabsEl.classList.toggle('open');
+  });
+
+  // Close Mobile Menu when clicking anywhere outside of it
+  document.addEventListener('click', (e) => {
+    if(window.innerWidth <= 760) {
+      const isClickInsideMenu = tabsEl.contains(e.target);
+      const isClickOnHamburger = hamburger.contains(e.target);
+      if (!isClickInsideMenu && !isClickOnHamburger) {
+        tabsEl.classList.remove('open');
+      }
+    }
   });
 
   window.addEventListener('popstate', () => {
@@ -562,7 +787,7 @@
     activate(location.hash.replace('#','') || 'home', {silent:true});
   });
 
-  // copy to clipboard for contact cards
+  // --- COPY TO CLIPBOARD LOGIC ---
   function wireCopy(id, text, noteId){
     const card = document.getElementById(id);
     const note = document.getElementById(noteId);
